@@ -1,9 +1,43 @@
 import cosas.*
 
-describe "group of test for cosas" {
+/*
+Hay que hacer un pequeño test para cada una de 
+las siguientes cosas: paquete de ladrillos, 
+batería antiaérea, contenedor portuario y embalaje de seguridad. 
+Al embalaje ponerle adentro los residuos radioactivos con 30 kg
+de peso. Al contenedor, dos o tres cosas a elección. 
+Todo esto en un archivo cosasTest.wtest.
 
-  test "first test" {
-    assert.that(true)
+*/
+describe "modificar nombre" {
+
+  test "Se agrega 300 ladrillos, su peso da 600 y tiene 2 de peligrosidad" {
+    paqueteDeLadrillos.cantidadDeLadrillos(300)
+    assert.equals(600,paqueteDeLadrillos.peso())
+    assert.equals(2,paqueteDeLadrillos.nivelPeligrosidad())
   }
 
+  test "Se verifica peso y peligrosidad antes y despues de cargar misiles de la bateria"{
+    assert.equals(bateriaAntiaerea.peso(), 200)
+    assert.equals(bateriaAntiaerea.nivelPeligrosidad(), 0)
+    bateriaAntiaerea.cargarMisiles()
+
+    assert.equals(bateriaAntiaerea.peso(), 300)
+    assert.equals(bateriaAntiaerea.nivelPeligrosidad(), 100)
+  }
+
+  test "Se agrega bumblebee(robot). knighrRider y arenaAGranel(400) al contenedor, y se verifica su peso y peligrosidad"{
+    arenaAGranel.peso(400)
+    bumblebee.transformar()
+    contenedorPortuario.agregarCosas([bumblebee, knightRider,arenaAGranel])
+    assert.equals(contenedorPortuario.peso(), 500 + 800 + 400 + 100)
+    assert.equals(contenedorPortuario.nivelPeligrosidad(), 30)
+  }
+
+  test "Se embalan se agrega 30 kg de residuos radiactivos"{
+    residuosRadioactivos.peso(30)
+    embalajeDeSeguridad.asegurar(residuosRadioactivos)
+    assert.equals(embalajeDeSeguridad.peso(), 30)
+    assert.equals(embalajeDeSeguridad.nivelPeligrosidad(), 200/2)
+  }
 }

@@ -4,20 +4,27 @@ object knightRider{
 }
 
 object bumblebee{
-    var estaTransformadoComoRobot = false
+    var estado = false
     method peso() = 800
     //no supe usar la terna
-    method nivelPeligrosidad() = 15 //estaTransformadoComoRobot ? 30 : 15
+    method nivelPeligrosidad() = estado.peligrosidad()
 
-    method transformar(){
-        estaTransformadoComoRobot = !estaTransformadoComoRobot
+    method transformar(nuevoEstado){
+        estado = nuevoEstado
     }
+}
+object robot{
+    method peligrosidad() = 30
+}
+
+object auto{
+    method peligrosidad() = 15
 }
 
 object paqueteDeLadrillos{
-    var cantidadDeLadrillos = 0
+    var property cantidadDeLadrillos = 0
     const pesoPorLadrillo = 2
-
+    /*
     method cantidadDeLadrillos(nuevaCantidad){
         cantidadDeLadrillos = nuevaCantidad
     }
@@ -32,6 +39,7 @@ object paqueteDeLadrillos{
             cantidadDeLadrillos = 0.max(cantidadDeLadrillos - unaCantidad)
         }
     }
+    */
 
     method peso() = cantidadDeLadrillos * pesoPorLadrillo
     method nivelPeligrosidad() = 2
@@ -45,24 +53,48 @@ object arenaAGranel{
 object bateriaAntiaerea{
     var tieneMisiles = false
 
-    method peso() = 200 // tieneMisiles ? 300 : 200
-    method nivelPeligrosidad() = 0 // tieneMisiles ? 100 : 0
+    method cargarMisiles(){
+        tieneMisiles = true
+    }
+
+    method descargarMisiles(){
+        tieneMisiles = false
+    }
+
+    method peso() = if (tieneMisiles) 300 else 200
+    method nivelPeligrosidad() = if (tieneMisiles) 100 else 0
 }
 
 object contenedorPortuario{
     const cosasDentro = []
     const pesoBaseContenerdor = 100
 
+    method agregarCosas(listaDeCosas){
+        cosasDentro.addAll(listaDeCosas)
+    }
+
+    method agregarCosa(cosa){
+        cosasDentro.add(cosa)
+    }
+
+    method quitarCosa(cosa){
+        cosasDentro.remove(cosa)
+    }
+
     method peso(){
-        return pesoBaseContenerdor + cosasDentro.sum({cosa => cosa.peso()})
+        return pesoBaseContenerdor + self.pesoAlmacenado()
+    }
+
+    method pesoAlmacenado(){
+        return cosasDentro.sum({cosa => cosa.peso()})
     }
 
     method nivelPeligrosidad(){
-        return 0// cosasDentro.size() == 0 ? 0 : self.maxNivelPeligrosidadContenedor()
+        return if (cosasDentro.size() == 0)  0 else self.maxNivelPeligrosidadContenedor()
     }
 
     method maxNivelPeligrosidadContenedor(){
-        return cosasDentro.max({cosa => cosa.nivelPelgrosidad()})
+        return cosasDentro.max({cosa => cosa.nivelPeligrosidad()}).nivelPeligrosidad()
     }
 }
 
@@ -75,6 +107,9 @@ object residuosRadioactivos{
 object embalajeDeSeguridad{
     var cosaAsegurada = null
 
+    method asegurar(cosa){
+        cosaAsegurada = cosa
+    }
     method peso() = cosaAsegurada.peso()
     method nivelPeligrosidad() = cosaAsegurada.nivelPeligrosidad() / 2
 }

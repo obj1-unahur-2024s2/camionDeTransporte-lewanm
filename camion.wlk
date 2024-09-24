@@ -32,14 +32,13 @@ object camion {
 
     
     //También se necesita conocer si los pesos de todas las cosas cargadas en el camión son números impares.
-    method todosLasCosasTienenPesoPar(){
+    method todasLasCosasTienenPesoPar(){
         return carga.all({cosa => cosa.peso().odd()})
     }
 
-    //No vi que en ninguna cosa tenga "VALOR" como atributo, pero lo dejo asi por ahora
     //Debemos poder consultar si hay alguna cosa que pesa un determinado valor.*/
-    method hayAlgunaCosaEnLaCargaDeValor(valor){
-        return carga.any({cosa => cosa.valor() == valor})
+    method hayAlgunaCosaEnLaCargaQuePese(peso){
+        return carga.any({cosa => cosa.peso() == peso})
     }
 
     /*
@@ -79,9 +78,13 @@ object camion {
     */
     method puedeCircularEnRuta(nivelMaximoPeligrosidadViaje){
         return !self.elPesoEstaExcedido() and 
-               carga.all({cosa => cosa.nivelPeligrosidad() < nivelMaximoPeligrosidadViaje})
+                self.todasLasCosasTienenMenorPeligrosidadAlMaximoPermitido(nivelMaximoPeligrosidadViaje)
+               
     }
 
+    method todasLasCosasTienenMenorPeligrosidadAlMaximoPermitido(maximoPermitido){
+        return carga.all({cosa => cosa.nivelPeligrosidad() < maximoPermitido})
+    }
 
     /*
     Se pide además, que se le pueda consultar al camión si tiene alguna cosa que pesa entre un valor mínimo y un valor máximo, y 
