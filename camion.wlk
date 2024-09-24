@@ -1,3 +1,4 @@
+import cosas.*
 /*
 Hacer toda la parte 1 hasta "agregados al camión" en los archivos camion.wlk y cosas.wlk.
 Armar dos tests, cosasTest.wtest y camionTest.wtest.
@@ -16,10 +17,10 @@ object camion {
         carga.add(cosa)
     }
 
+    method carga() = carga
+
     method descargar(cosa){
-        if(carga.contains(cosa)){
-            carga.remove(cosa)
-        }
+        carga.remove(cosa)
     }
 
     method pesoTotalCarga(){
@@ -33,7 +34,7 @@ object camion {
     
     //También se necesita conocer si los pesos de todas las cosas cargadas en el camión son números impares.
     method todasLasCosasTienenPesoPar(){
-        return carga.all({cosa => cosa.peso().odd()})
+        return carga.all({cosa => cosa.peso().even()})
     }
 
     //Debemos poder consultar si hay alguna cosa que pesa un determinado valor.*/
@@ -46,11 +47,7 @@ object camion {
     se debe poder obtener la primer cosa cargada que tenga un determinado nivel de peligrosidad
     */
     method primeraCosaConPeligrosidadNivel(nivel){
-        return self.cosasConNivelDePeligrosidad(nivel).first()
-    }
-
-    method cosasConNivelDePeligrosidad(nivel){
-        return carga.filer({cosa => cosa.nivelPeligrosidad() == nivel})
+        return carga.find({cosa => cosa.nivelPeligrosidad() == nivel}) //devuelve el primero
     }
 
     //Obtener todas las cosas que superan un determinado nivel de peligrosidad.

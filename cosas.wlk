@@ -4,7 +4,7 @@ object knightRider{
 }
 
 object bumblebee{
-    var estado = false
+    var estado = auto
     method peso() = 800
     //no supe usar la terna
     method nivelPeligrosidad() = estado.peligrosidad()
@@ -90,7 +90,8 @@ object contenedorPortuario{
     }
 
     method nivelPeligrosidad(){
-        return if (cosasDentro.size() == 0)  0 else self.maxNivelPeligrosidadContenedor()
+        if (cosasDentro.isEmpty()) return 0 
+        return self.maxNivelPeligrosidadContenedor()
     }
 
     method maxNivelPeligrosidadContenedor(){
@@ -105,11 +106,16 @@ object residuosRadioactivos{
 }
 
 object embalajeDeSeguridad{
-    var cosaAsegurada = null
+    var cosaAsegurada = vacio
 
     method asegurar(cosa){
         cosaAsegurada = cosa
     }
     method peso() = cosaAsegurada.peso()
-    method nivelPeligrosidad() = cosaAsegurada.nivelPeligrosidad() / 2
+    method nivelPeligrosidad() = cosaAsegurada.nivelPeligrosidad() * 0.5
+}
+
+object vacio{
+    method peso() = 0
+    method nivelPeligrosidad() = 0
 }

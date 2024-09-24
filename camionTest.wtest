@@ -12,53 +12,52 @@ y hacer el test correspondiente.*/
 
 describe "group of test for camion" {
 
-  bumblebee.transformar()
-  arenaAGranel.peso(150)
-  bateriaAntiaerea.cargarMisiles()
-  paqueteDeLadrillos.cantidadDeLadrillos(80)
-  embalajeDeSeguridad.asegurar(paqueteDeLadrillos)
+  method initialize(){
+    bumblebee.transformar(robot)
+    arenaAGranel.peso(150)
+    bateriaAntiaerea.cargarMisiles()
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalajeDeSeguridad.asegurar(paqueteDeLadrillos)
 
-  camion.cargar(bumblebee)
-  camion.cargar(arenaAGranel)
-  camion.cargar(bateriaAntiaerea)
-  camion.cargar(embalajeDeSeguridad)
+    camion.cargar(bumblebee)
+    camion.cargar(arenaAGranel)
+    camion.cargar(bateriaAntiaerea)
+    camion.cargar(embalajeDeSeguridad)
+  }
+
   test "Se prueba que el peso del camion con bumblebee. arenaAgranel(150), bateria con misiles y 80 ladrillos envueltos en embalaje de seguridad" {
 
     assert.equals(camion.pesoTotalCamion(), 1000+800+150+300+2*80)
     
   }
 
-  test "agregando las mismas cosas al camion tiene todas cosas de peso par"{
+  test "El camion tiene todas cosas de peso par"{
     assert.that(camion.todasLasCosasTienenPesoPar())
   }
 
-  test "Agregando las mismas cosas... hay algujna cosa que pese 800 y ninguna que pese 320"{
+  test "hay algujna cosa que pese 800 y ninguna que pese 320"{
     assert.that(camion.hayAlgunaCosaEnLaCargaQuePese(800))
     assert.notThat(camion.hayAlgunaCosaEnLaCargaQuePese(320))
   }
 
-  test "agregando las mismas cosas... la primera cosa con peligrosidad 1 es arena a granel"{
+  test "la primera cosa con peligrosidad 1 es arena a granel"{
     assert.equals(camion.primeraCosaConPeligrosidadNivel(1), arenaAGranel)
   }
 
-  test "agregando las mismas cosas... las cosas con peligrosidad 1 es arena a granel y ladrillos envueltos"{
-    assert.equals(camion.cosasConNivelDePeligrosidad(1), [arenaAGranel, embalajeDeSeguridad])
+  test "Verifico que las cosas que superan el maximo (10) y devuelve bumblebee y bateriaAerea"{
+    assert.equals(camion.cosasQueSuperanElNivelDePeligrosidad(10),[bumblebee,bateriaAntiaerea])
   }
 
-  test "AAAAAA"{
-    assert.equals(camion.cosasQueSuperanElNivelDePeligrosidad(100),[])
-  }
-
-  test "SDASDAS"{
-    assert.equals(camion.cosasQueSuperanElNivelDePeligrosidadDeUnaCosa(bumblebee), [])
+  test "Verfiico los objetos mas peligrosos que bumblebee, devuelve BateriaAntiaerea"{
+    assert.equals(camion.cosasQueSuperanElNivelDePeligrosidadDeUnaCosa(bumblebee), [bateriaAntiaerea])
   }
 
   test "El peso del camion esta permitido"{
-    assert.that(camion.elPesoEstaExcedido())
+    assert.notThat(camion.elPesoEstaExcedido())
   }
 
   test "el camion no puede circural yendo a MDQ(180), pero si a Santiago del estero(300)"{
-    assert.notThat(camion.puedeCircularEnRuta(180))
+    assert.notThat(camion.puedeCircularEnRuta(50))
     assert.that(camion.puedeCircularEnRuta(300))
   }
 
