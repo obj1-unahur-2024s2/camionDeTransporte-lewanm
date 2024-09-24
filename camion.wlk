@@ -32,43 +32,54 @@ object camion {
 
     
     //También se necesita conocer si los pesos de todas las cosas cargadas en el camión son números impares.
-    method todosLasCargasTienenPesoPar(){
-        return carga.all({carga => carga.peso().odd()})
+    method todosLasCosasTienenPesoPar(){
+        return carga.all({cosa => cosa.peso().odd()})
     }
 
+    //No vi que en ninguna cosa tenga "VALOR" como atributo, pero lo dejo asi por ahora
     //Debemos poder consultar si hay alguna cosa que pesa un determinado valor.*/
     method hayAlgunaCosaEnLaCargaDeValor(valor){
-        return carga.any({carga => carga.valor() == valor})
+        return carga.any({cosa => cosa.valor() == valor})
     }
 
     /*
     Para un mejor control del tipo de peligro que puede representar la carga, 
     se debe poder obtener la primer cosa cargada que tenga un determinado nivel de peligrosidad
     */
-    method primeraCargaConPeligrosidadNivel(nivel){
-        return self.cargasConNivelDePeligrosidad(nivel).first()
+    method primeraCosaConPeligrosidadNivel(nivel){
+        return self.cosasConNivelDePeligrosidad(nivel).first()
     }
 
-    method cargasConNivelDePeligrosidad(nivel){
-        return carga.filer({carga => carga.nivelPeligrosidad() == nivel})
+    method cosasConNivelDePeligrosidad(nivel){
+        return carga.filer({cosa => cosa.nivelPeligrosidad() == nivel})
     }
 
     //Obtener todas las cosas que superan un determinado nivel de peligrosidad.
-    method cargasQueSuperanElNivelDePeligrosidad(nivel){
-        return carga.filter({carga => carga.nivelPeligrosidad() > nivel})
+    method cosasQueSuperanElNivelDePeligrosidad(nivel){
+        return carga.filter({cosa => cosa.nivelPeligrosidad() > nivel})
     }
 
     /*
     Para facilitar los controles, también nos piden que se pueda consultar la lista de cosas que 
     superan el nivel de peligrosidad de una cosa dada.
     */
-    method cargasQueSuperanElNivelDePeligrosidadDeUnaCarga(unaCarga){
-        return self.cargasQueSuperanElNivelDePeligrosidad(unaCarga.nivelPeligrosidad())
+    method cosasQueSuperanElNivelDePeligrosidadDeUnaCosa(unaCosa){
+        return self.cosasQueSuperanElNivelDePeligrosidad(unaCosa.nivelPeligrosidad())
     }
 
     //Conocer si el camión está excedido del peso máximo permitido,que es de 2500 kg.
-    method elPesoEstaExedido(){
-        return pesoTotalCamion() > pesoMaximoPermitido
+    method elPesoEstaExcedido(){
+        return self.pesoTotalCamion() > pesoMaximoPermitido
+    }
+
+    /*
+    Saber si el camión puede circular en ruta. Eso depende de que no exceda el peso máximo permitido y ninguno de los objetos 
+    cargados supere un nivel máximo de peligrosidad que depende del viaje, 
+    por eso para este caso el valor del nivel se pasará como argumento
+    */
+    method puedeCircularEnRuta(nivelMaximoPeligrosidadViaje){
+        return !self.elPesoEstaExcedido() and 
+               carga.all({cosa => cosa.nivelPeligrosidad() < nivelMaximoPeligrosidadViaje})
     }
 
 }
