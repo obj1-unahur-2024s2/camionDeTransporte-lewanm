@@ -82,4 +82,17 @@ object camion {
                carga.all({cosa => cosa.nivelPeligrosidad() < nivelMaximoPeligrosidadViaje})
     }
 
+
+    /*
+    Se pide además, que se le pueda consultar al camión si tiene alguna cosa que pesa entre un valor mínimo y un valor máximo, y 
+    la cosa más pesada que tiene cargada.
+    */    
+
+    method tieneAlgunaCosaQuePeseEntre(valorMinimo,valorMaximo){
+        return carga.any({cosa => cosa.peso().between(valorMinimo,valorMaximo)})
+    }
+
+    method laCosaMasPesadaCargada(){
+        return carga.max({cosa => cosa.peso()})
+    }
 }

@@ -49,6 +49,23 @@ object bateriaAntiaerea{
     method nivelPeligrosidad() = 0 // tieneMisiles ? 100 : 0
 }
 
+object contenedorPortuario{
+    const cosasDentro = []
+    const pesoBaseContenerdor = 100
+
+    method peso(){
+        return pesoBaseContenerdor + cosasDentro.sum({cosa => cosa.peso()})
+    }
+
+    method nivelPeligrosidad(){
+        return 0// cosasDentro.size() == 0 ? 0 : self.maxNivelPeligrosidadContenedor()
+    }
+
+    method maxNivelPeligrosidadContenedor(){
+        return cosasDentro.max({cosa => cosa.nivelPelgrosidad()})
+    }
+}
+
 object residuosRadioactivos{
     var property peso = 0
 
